@@ -1,4 +1,4 @@
-import { CaixaDaLanchonete } from "./caixa-da-lanchonete.js";
+import {CaixaDaLanchonete} from "./caixa-da-lanchonete.js";
 
 describe('CaixaDaLanchonete', () => {
 
@@ -47,5 +47,16 @@ describe('CaixaDaLanchonete', () => {
         ['chantily com outro item', 'credito', 'Item extra não pode ser pedido sem o principal', ['chantily,1', 'sanduiche,1']],
         ['queijo com outro item', 'debito', 'Item extra não pode ser pedido sem o principal', ['cafe,1', 'queijo,1']],
     ])('compra %p em %p deve resultar em %p', (_, formaDePagamento, resultadoEsperado, itens) =>
+        validaTeste(formaDePagamento, resultadoEsperado, itens));
+
+    test.each([
+        ['com item mal formado', 'debito', 'Item inválido!', ['cafe 1']],
+        ['com item sem quatidade', 'debito', 'Quantidade inválida!', ['cafe']],
+    ])('compra %p em %p deve resultar em %p', (_, formaDePagamento, resultadoEsperado, itens) =>
+        validaTeste(formaDePagamento, resultadoEsperado, itens));
+
+    test.each([
+        ['com um dos items a zero', 'debito', 'R$ 35,50', ['cafe,4', 'sanduiche,3', 'queijo,2', 'suco,0']],
+    ])('compra de múltiplas quantidades em %p deve resultar em %p', (_, formaDePagamento, resultadoEsperado, itens) =>
         validaTeste(formaDePagamento, resultadoEsperado, itens));
 });
